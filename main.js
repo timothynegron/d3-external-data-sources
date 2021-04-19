@@ -24,7 +24,6 @@ d3.csv("MonthlySales.csv", function(error, data){
         buildLine();
         showTotals();
     }
-
 });
 
 
@@ -65,22 +64,22 @@ const viz = svg1.append("path")
 
 function showTotals(){
 
-    const t = d3.select("body").append("table");
+    const t = d3.select("#csv-table").append("table");
 
-    // Get total
+    // Get sales total
     for(let i = 0; i < ds.length; i++){
         salesTotal += ds[i]["sales"]*1; // convert to number
     }
 
-    // Calculate Average
+    // Calculate sales Average
     salesAvg = salesTotal / ds.length;
 
     // Add metrics to array
     metrics.push("Sales Total: " + salesTotal);
     metrics.push("Sales Avg: " + salesAvg.toFixed(2));
 
-    // Add total
-    const tr = t.select("tr")
+    // Add metrics to table
+    const tr = t.selectAll("tr")
                 .data(metrics)
                 .enter()
                 .append("tr")
