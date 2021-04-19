@@ -18,7 +18,7 @@ d3.csv("MonthlySales.csv", function(error, data){
     if(error){
         console.log(error);
     }else{
-        console.log(data);
+        //console.log(data);
         ds = data;
         console.log(ds);
         buildLine();
@@ -97,9 +97,6 @@ function showTotals(){
 const height2 = 100;
 const width2 = 400;
 let ds1; // global variable for data - dataset
-let salesTotal1 = 0.0;
-let salesAvg1 = 0.0;
-let metrics1 = [];
 
 function buildJSONLine(){
 
@@ -143,5 +140,63 @@ d3.json("MonthlySalesbyCategory.json", function(error, data){
         showHeader();
         buildJSONLine();
     }
+});
+
+
+// ┌────────────────┐
+// │   JSON File 2  │	
+// └────────────────┘
+
+
+const height3 = 100;
+const width3 = 400;
+let ds2; // global variable for data - dataset
+
+function buildJSONLine2(ds2){
+
+    // Line function
+   const lineFun = d3.svg.line()
+   .x(function(d){return (d.month-20130001)/3.25})
+   .y(function(d){return (height3-d.sales);})
+   .interpolate("linear");
+
+// Append svg to tag
+const svg1 = d3.select("#json2")
+           .append("svg")
+           .attr({
+               width: width3,
+               height: height3
+});
+
+// Append visuals to svg
+const viz = svg1.append("path")
+               .attr({
+                   d: lineFun(ds2.monthlySales),
+                   "stroke": "purple",
+                   "stroke-width": 2,
+                   "fill": "none"
+   });
+
+}
+
+function showHeader2(ds2) {
+    d3.select("#json2").append("h1")
+                        .text(ds2.category + " Sales (2013)");
+}
+
+d3.json("MonthlySalesbyCategoryMultiple.json", function(error, data){
+
+    if(error){
+        console.log(error);
+    }else{
+        ds2 = data;
+        console.log(ds2);
+    }
+
+    data.contents.forEach(function(ds2){
+        console.log(ds2);
+        showHeader2(ds2);
+        buildJSONLine2(ds2);
+    })
 });
 
