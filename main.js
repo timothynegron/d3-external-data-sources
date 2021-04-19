@@ -1,6 +1,7 @@
 const height1 = 100;
 const width1 = 400;
 let ds; // global variable for data
+let salesTotal = 0.0;
 
 // pull in csv data and parse it out to a object
 // d3.json d3.txt d3.xhr etc....
@@ -16,6 +17,7 @@ d3.csv("MonthlySales.csv", function(error, data){
         ds = data;
         console.log(ds);
         buildLine();
+        showTotals();
     }
 
 });
@@ -56,3 +58,20 @@ const viz = svg1.append("path")
 // │   Function Show Totals   │	
 // └──────────────────────────┘
 
+function showTotals(){
+
+    const t = d3.select("body").append("table");
+
+    // Get total
+    for(let i = 0; i < ds.length; i++){
+        salesTotal += ds[i]["sales"]*1; // convert to number
+    }
+
+    // Add total
+    const tr = t.select("tr")
+                .data([1])
+                .enter()
+                .append("tr")
+                .append("td")
+                .text("Sales Total: " + salesTotal);
+}
