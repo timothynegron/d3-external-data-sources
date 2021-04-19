@@ -1,13 +1,18 @@
+// ┌──────────────────────┐
+// │   Global Variables   │	
+// └──────────────────────┘
+
 const height1 = 100;
 const width1 = 400;
-let ds; // global variable for data
+let ds; // global variable for data - dataset
 let salesTotal = 0.0;
+let salesAvg = 0.0;
+let metrics = [];
 
-// pull in csv data and parse it out to a object
-// d3.json d3.txt d3.xhr etc....
-// When this method is called it will run asynchronously
-// Meaning its not going to run sequentially in order
-// So you should type in code to draw data inside d3.csv
+// ┌─────────────────┐
+// │   d3 csv call   │	
+// └─────────────────┘
+
 d3.csv("MonthlySales.csv", function(error, data){
 
     if(error){
@@ -67,11 +72,19 @@ function showTotals(){
         salesTotal += ds[i]["sales"]*1; // convert to number
     }
 
+    // Calculate Average
+    salesAvg = salesTotal / ds.length;
+
+    // Add metrics to array
+    metrics.push("Sales Total: " + salesTotal);
+    metrics.push("Sales Avg: " + salesAvg.toFixed(2));
+
     // Add total
     const tr = t.select("tr")
-                .data([1])
+                .data(metrics)
                 .enter()
                 .append("tr")
                 .append("td")
-                .text("Sales Total: " + salesTotal);
+                .text(function(d) {return d;});
 }
+
