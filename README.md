@@ -26,3 +26,5 @@
 * When this method is called it will run asynchronously
 * Meaning its not going to run sequentially in order
 * So you should type in code to draw data inside d3.csv
+* CSV: Comma Separated Values
+* JSON: JavaScript Object Notation

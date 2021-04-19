@@ -87,3 +87,61 @@ function showTotals(){
                 .text(function(d) {return d;});
 }
 
+
+
+
+// ┌───────────────┐
+// │   JSON File   │	
+// └───────────────┘
+
+const height2 = 100;
+const width2 = 400;
+let ds1; // global variable for data - dataset
+let salesTotal1 = 0.0;
+let salesAvg1 = 0.0;
+let metrics1 = [];
+
+function buildJSONLine(){
+
+    // Line function
+   const lineFun = d3.svg.line()
+   .x(function(d){return (d.month-20130001)/3.25})
+   .y(function(d){return (height2-d.sales);})
+   .interpolate("linear");
+
+// Append svg to tag
+const svg1 = d3.select("#json")
+           .append("svg")
+           .attr({
+               width: width2,
+               height: height2
+});
+
+// Append visuals to svg
+const viz = svg1.append("path")
+               .attr({
+                   d: lineFun(ds1.monthlySales),
+                   "stroke": "purple",
+                   "stroke-width": 2,
+                   "fill": "none"
+   });
+
+}
+
+function showHeader() {
+    d3.select("#json").append("h1")
+                        .text(ds1.category + " Sales (2013)");
+}
+
+d3.json("MonthlySalesbyCategory.json", function(error, data){
+
+    if(error){
+        console.log(error);
+    }else{
+        ds1 = data;
+        console.log(ds1);
+        showHeader();
+        buildJSONLine();
+    }
+});
+
